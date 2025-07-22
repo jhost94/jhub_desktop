@@ -12,7 +12,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class JRipOffTabbedPane extends JTabbedPane {
 
     private static final int DRAG_THRESHOLD = 50;
@@ -26,12 +28,14 @@ public class JRipOffTabbedPane extends JTabbedPane {
             public void mousePressed(MouseEvent e) {
                 draggedTabIndex = indexAtLocation(e.getX(), e.getY());
                 dragStartPoint = e.getPoint();
+                log.info("Running event {}", e);
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
                 if (draggedTabIndex != -1 && isDragOutsideThreshold(e.getPoint())) {
                     tearOffTab(draggedTabIndex);
+                    log.info("Running event {}", e);
                 }
                 draggedTabIndex = -1;
             }

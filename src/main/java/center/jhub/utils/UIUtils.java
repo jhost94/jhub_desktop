@@ -6,7 +6,9 @@ public class UIUtils {
 
     private UIUtils(){}
 
-    public static void setTittle(Frame frame, String name) {
-        frame.setTitle(name + "| JHub Center - " + Runtime.version());
+    public static String setTittle(Frame frame, String name) {
+        String tittle = name + " | JHub Center - " + AppUtils.getVersionString() + " | " + Runtime.version();
+        frame.setTitle(tittle);
+        return tittle;
     }
 }

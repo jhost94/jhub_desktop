@@ -1,21 +1,21 @@
 package center.jhub.ui.window;
 
-import center.jhub.ui.panel.SplashPanel;
+import center.jhub.ui.panel.LoadingSplashPanel;
 
 public class LoadingWindow extends javax.swing.JWindow {
-    private SplashPanel splashPanel;
+    private LoadingSplashPanel loadingSplashPanel;
 
     public LoadingWindow() {
-        this.splashPanel = new SplashPanel();
+        this.loadingSplashPanel = new LoadingSplashPanel();
 
-        getContentPane().add(splashPanel);
+        getContentPane().add(loadingSplashPanel);
         setSize(450, 80);
         setLocationRelativeTo(null);
         setVisible(Boolean.TRUE);
     }
 
     public void setProgressText(String text) {
-        splashPanel.setProgressText(text);
+        loadingSplashPanel.setProgressText(text);
     }
 
     public void destroy() {

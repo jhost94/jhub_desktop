@@ -4,7 +4,6 @@ import center.jhub.utils.AppUtils;
 import center.jhub.utils.ImageUtils;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.imageio.ImageIO;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -19,27 +18,35 @@ import static center.jhub.constants.FileConstants.ICONS_DIRECTORY;
 import static center.jhub.constants.FileConstants.ICON_PNG;
 
 @Slf4j
-public class SplashPanel extends javax.swing.JPanel {
+public class LoadingSplashPanel extends javax.swing.JPanel {
 
     private Font smallFont;
     private Font bigFont;
     private String progressText;
     private BufferedImage logo;
     private String versionString = AppUtils.getVersionString();
+    private int logoWidth;
+    private int logoHeight;
+    private int textStartX;
+    private int border;
 
-    public SplashPanel() {
+    public LoadingSplashPanel() {
         setOpaque(Boolean.TRUE);
         setBackground(Color.WHITE);
 
         this.bigFont = new Font("Arial", Font.BOLD, 20);
         this.smallFont = new Font("Arial", Font.BOLD, 10);
+        this.logoWidth = 64;
+        this.logoHeight = 64;
+        this.textStartX = 90;
+        this.border = 12;
 
         try {
             BufferedImage original = ImageUtils.getBufferedImage(ICONS_DIRECTORY, ICON_PNG);
-            this.logo = ImageUtils.getTempBufferedImage(64, 64);
+            this.logo = ImageUtils.getTempBufferedImage(this.logoWidth, this.logoHeight);
             Graphics2D g2d = logo.createGraphics();
             g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            g2d.drawImage(original, 0, 0, 64, 64, null);
+            g2d.drawImage(original, 0, 0, this.logoWidth, this.logoHeight, null);
             g2d.dispose();
         } catch (IOException e) {
             this.logo = null;
@@ -62,20 +69,32 @@ public class SplashPanel extends javax.swing.JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         if (Objects.nonNull(logo)) {
-            g2d.drawImage(logo, 12, 0, null);
+            g2d.drawImage(logo, calculateLogoStartWidth(), calculateLogoStartHeight(), null);
         }
 
         g2d.setFont(bigFont);
         g2d.setColor(Color.BLACK);
-        g2d.drawString("JHub Center App", 90, 50);
+        g2d.drawString("JHub Center App", this.textStartX, 50);
 
         g2d.setFont(smallFont);
         g2d.setColor(Color.BLACK);
-        g2d.drawString(progressText + "...", 90, 70);
+        g2d.drawString(progressText + "...", this.textStartX, 70);
 
         FontMetrics smallFontMetrics = g2d.getFontMetrics(smallFont);
         int textWidth = smallFontMetrics.stringWidth(versionString);
         g2d.setColor(Color.RED);
-        g2d.drawString(versionString, 428 - textWidth, 70);
+        g2d.drawString(versionString, getWidth() - this.border - textWidth, 70);
+    }
+    
+    private int calculateLogoStartHeight() {
+        if (getHeight() < this.logoHeight) return 0; //TODO: force current height to fit logo? Use a feature toggle?
+        int diff = getHeight() - this.logoHeight;
+        
+        return diff / 2;
+    }
+    
+    private int calculateLogoStartWidth() {
+        if (getWidth() < this.logoWidth) return 0; //TODO: force current height to fit logo? Use a feature toggle?
+        return this.border; //TODO: try to get a better way of doing this
     }
 }

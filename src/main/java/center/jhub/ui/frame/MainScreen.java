@@ -1,10 +1,9 @@
 package center.jhub.ui.frame;
 
 import center.jhub.ui.gui.JInterface;
-import center.jhub.ui.panel.SplashPanel;
+import center.jhub.ui.panel.LoadingSplashPanel;
 import center.jhub.ui.tab.JRipOffTabbedPane;
 import center.jhub.ui.tab.ModernTabbedPanel;
-import center.jhub.ui.window.LoadingWindow;
 import center.jhub.utils.AppUtils;
 import center.jhub.utils.ImageUtils;
 
@@ -15,29 +14,27 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Image;
+import lombok.extern.slf4j.Slf4j;
 
 import static center.jhub.constants.FileConstants.ICONS_DIRECTORY;
 import static center.jhub.constants.FileConstants.ICON_PNG;
 import static center.jhub.constants.UIConstants.DEFAULT_HEIGHT;
 import static center.jhub.constants.UIConstants.DEFAULT_WIDTH;
 
+@Slf4j
 public class MainScreen extends JFrame implements JInterface {
 
     private JRipOffTabbedPane ripOffTabbedPane;
-
-    private SplashPanel panel;
-
     private ClickerUI clickerUI;
 
     public MainScreen() {
         AppUtils.startLoadingScreen();
         try {
-            Thread.sleep(10000);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
-        this.panel = new SplashPanel();
         this.ripOffTabbedPane = new JRipOffTabbedPane();
         this.clickerUI = new ClickerUI();
         AppUtils.stopLoadingScreen();
@@ -66,7 +63,6 @@ public class MainScreen extends JFrame implements JInterface {
 
         setLayout(new BorderLayout());
         add(ripOffTabbedPane, BorderLayout.CENTER);
-
     }
 
     private void addRipOffTab(String title, JPanel panel, JInterface jInterface) {
