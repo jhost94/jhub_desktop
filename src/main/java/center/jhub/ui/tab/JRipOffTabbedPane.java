@@ -28,14 +28,14 @@ public class JRipOffTabbedPane extends JTabbedPane {
             public void mousePressed(MouseEvent e) {
                 draggedTabIndex = indexAtLocation(e.getX(), e.getY());
                 dragStartPoint = e.getPoint();
-                log.info("Running event {}", e);
+//                log.info("Running event {}", e);
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
                 if (draggedTabIndex != -1 && isDragOutsideThreshold(e.getPoint())) {
                     tearOffTab(draggedTabIndex);
-                    log.info("Running event {}", e);
+//                    log.info("Running event {}", e);
                 }
                 draggedTabIndex = -1;
             }
