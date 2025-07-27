@@ -1,51 +1,42 @@
 package center.jhub.ui.frame;
 
+import static center.jhub.constants.FileConstants.ICONS_DIRECTORY;
+import static center.jhub.constants.FileConstants.ICON_PNG;
+import static center.jhub.constants.UIConstants.DEFAULT_HEIGHT;
+import static center.jhub.constants.UIConstants.DEFAULT_WIDTH;
+
 import center.jhub.lib.layout.TableLayout;
-import center.jhub.ui.gui.JInterface;
 import center.jhub.ui.gui.Loadable;
 import center.jhub.utils.ImageUtils;
 import center.jhub.utils.UIUtils;
-
-import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.UIManager;
 
-import java.awt.Color;
-import lombok.extern.slf4j.Slf4j;
+public class LandingPage extends GenericScreen {
+    
+    private static final String TITLE = "Main Screen";
+    public static final String TAB_NAME = "Main";
 
-import static center.jhub.constants.FileConstants.ICONS_DIRECTORY;
-import static center.jhub.constants.FileConstants.ICON_PNG;
-import static center.jhub.constants.UIConstants.DEFAULT_HEIGHT;
-import static center.jhub.constants.UIConstants.DEFAULT_WIDTH;
-
-@Slf4j
-public class ClickerUI extends GenericScreen {
-
-    private static final String TITLE = "Clicker config";
-    public static final String TAB_NAME = "Clicker";
-
-    public ClickerUI() {
+    public LandingPage() {
         super(TITLE, TAB_NAME);
     }
 
     @Override
     public void init() {
-        String setTitle = UIUtils.setTittle(this, TITLE);
+        UIUtils.setTittle(this, TITLE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+
         setIconImage(ImageUtils.getImage(ICONS_DIRECTORY, ICON_PNG));
         UIManager.put("TabbedPane.contentAreaColor", Color.RED);
         UIManager.put("TabbedPane.hasFullBorder", Boolean.FALSE);
-        log.info("Set tittle {}", setTitle);
     }
-    
+
     @Override
     public void load() {
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
