@@ -1,6 +1,6 @@
 package center.jhub.desktop.framework.ui.frame;
 
-import center.jhub.desktop.framework.layout.BorderLayoutHelper;
+import center.jhub.desktop.framework.layout.TableLayoutHelper;
 import center.jhub.desktop.framework.ui.gui.JInterface;
 import center.jhub.desktop.framework.ui.gui.Loadable;
 import center.jhub.desktop.utils.UIUtils;
@@ -17,6 +17,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 public abstract class GenericScreen extends JFrame implements JInterface, Loadable {
+
+    @Getter
     private final UUID internalId;
 
     @Setter
@@ -25,7 +27,7 @@ public abstract class GenericScreen extends JFrame implements JInterface, Loadab
 
     protected final JPanel mainPanel;
     protected String toolTip;
-    protected BorderLayoutHelper borderLayoutHelper;
+    protected TableLayoutHelper tableLayoutHelper;
     
     @Getter
     protected String tabName;
@@ -37,7 +39,7 @@ public abstract class GenericScreen extends JFrame implements JInterface, Loadab
         add(mainPanel, BorderLayout.CENTER);
         this.toolTip = toolTip;
         this.tabName = tabName;
-        this.borderLayoutHelper = new BorderLayoutHelper();
+        this.tableLayoutHelper = new TableLayoutHelper();
     }
 
     @Override
@@ -50,10 +52,10 @@ public abstract class GenericScreen extends JFrame implements JInterface, Loadab
     protected JButton addButton(String strButtonLabel, int row, String strLabel) {
         JButton clResult= new JButton(strButtonLabel);
         UIUtils.applyCommonStyle(clResult);
-        mainPanel.add(clResult, borderLayoutHelper.restraintForContent(0, row));
+        mainPanel.add(clResult, tableLayoutHelper.restraintForContent(0, row));
         JLabel clLabel = new JLabel(strLabel);
         UIUtils.applyCommonStyle(clLabel);
-        mainPanel.add(clLabel, borderLayoutHelper.restraintForContent(1, row));
+        mainPanel.add(clLabel, tableLayoutHelper.restraintForContent(1, row));
         return clResult;
     }
 

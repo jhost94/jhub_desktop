@@ -43,41 +43,17 @@ public class WindowMacro extends GenericScreen {
     @Override
     public void load() {
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-
-        double[] cols = {
-            5,
-            250,
-            5,
-            TableLayout.FILL,
-            5
-        };
-        double[] rows = {
-            2,
-            15,
-            2,
-            15,
-            2,
-            15,
-            2,
-            15,
-            2,
-            15,
-            2,
-            15,
-            2
-        };
-        mainPanel.setLayout(new TableLayout(cols, rows));
+        mainPanel.setLayout(new TableLayout(tableLayoutHelper.getCols(), tableLayoutHelper.getRows()));
 
         JButton button1 = addButton(getToolTipText() + "Create new window macro", 1, "Button 1 description.");
         JButton button2 = addButton(getToolTipText() + "Close All macros", 3, "Button 2 description.");
-        JButton button3 = addButton(getToolTipText() + "Button 3", 5, "Button 3 description.");
+        JButton button3 = addButton("Close", 5, "Button 3 description.");
         JButton openBrowserButton = addButton(getToolTipText() + "Browser Start",9,"Heads default browser to the URL.");
-        String id = "macro";
 
         button1.addActionListener(e -> {
-            WindowMacroSub w = new WindowMacroSub(id);
+            WindowMacroSub w = new WindowMacroSub(getInternalId().toString());
 
-            Context.subApps(id, w);
+            Context.subApps(getInternalId().toString(), w);
 
             w.init();
             Context.MAIN_SCREEN.addRipOffTab(w);
@@ -87,11 +63,11 @@ public class WindowMacro extends GenericScreen {
         });
 
         button2.addActionListener(e -> {
-            Context.closeSubApps(id);
+            Context.closeSubApps(getInternalId().toString());
         });
 
         button3.addActionListener(e -> {
-
+            this.close();
         });
 
         openBrowserButton.addActionListener(e ->
@@ -106,6 +82,7 @@ public class WindowMacro extends GenericScreen {
 
     @Override
     public void close() {
+        Context.closeSubApps(getInternalId().toString());
         Context.MAIN_SCREEN.getScreens().remove(this);
         Context.mainApps().remove(this);
         Context.MAIN_SCREEN.removeRipOffTab(this);

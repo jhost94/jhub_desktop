@@ -62,29 +62,7 @@ public class ClickerUI extends GenericScreen {
     @Override
     public void load() {
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        double[] cols = {
-            5,
-            250,
-            5,
-            TableLayout.FILL,
-            5
-        };
-        double[] rows = {
-            2,
-            15,
-            2,
-            15,
-            2,
-            15,
-            2,
-            15,
-            2,
-            15,
-            2,
-            15,
-            2
-        };
-        mainPanel.setLayout(new TableLayout(cols, rows));
+        mainPanel.setLayout(new TableLayout(tableLayoutHelper.getCols(), tableLayoutHelper.getRows()));
 
         JButton button1 = addButton(getToolTipText() + "robot go", 1, "Button 1 description.");
         JButton button2 = addButton(getToolTipText() + "Button 2", 3, "Button 2 description.");
@@ -126,10 +104,7 @@ public class ClickerUI extends GenericScreen {
         });
 
         button3.addActionListener(e -> {
-            button1.setEnabled(true);
-            button2.setEnabled(true);
-            button3.setEnabled(false);
-            button3.setText("Started");
+            this.close();
         });
 
         openBrowserButton.addActionListener(e ->
@@ -144,6 +119,10 @@ public class ClickerUI extends GenericScreen {
 
     @Override
     public void close() {
+        keyListener.close();
+
+        robot = null;
+        keyListener = null;
         Context.MAIN_SCREEN.getScreens().remove(this);
         Context.mainApps().remove(this);
         Context.MAIN_SCREEN.removeRipOffTab(this);

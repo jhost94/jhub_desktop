@@ -47,30 +47,7 @@ public class WindowMacroSub extends GenericScreen {
     @Override
     public void load() {
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-
-        double[] cols = {
-            5,
-            250,
-            5,
-            TableLayout.FILL,
-            5
-        };
-        double[] rows = {
-            2,
-            15,
-            2,
-            15,
-            2,
-            15,
-            2,
-            15,
-            2,
-            15,
-            2,
-            15,
-            2
-        };
-        mainPanel.setLayout(new TableLayout(cols, rows));
+        mainPanel.setLayout(new TableLayout(tableLayoutHelper.getCols(), tableLayoutHelper.getRows()));
 
         JButton button1 = addButton("Button 1", 1, "Button 1 description.");
         JButton button2 = addButton("Button 2", 3, "Button 2 description.");

@@ -176,11 +176,9 @@ public class TableLayout implements LayoutManager2, Serializable, TableLayoutCon
     public void setConstraints(Component component, TableLayoutConstraints constraint) {
         // Check parameters
         if (component == null)
-            throw new IllegalArgumentException
-                      ("Parameter component cannot be null.");
+            throw new IllegalArgumentException("Parameter component cannot be null.");
         else if (constraint == null)
-            throw new IllegalArgumentException
-                      ("Parameter constraint cannot be null.");
+            throw new IllegalArgumentException("Parameter constraint cannot be null.");
 
         // Find and update constraints for the given component
         ListIterator<Entry> iterator = list.listIterator(0);

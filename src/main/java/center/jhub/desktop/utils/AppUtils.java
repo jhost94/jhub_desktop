@@ -52,8 +52,6 @@ public class AppUtils {
 
     private static void loadMainScreens() {
         Context.mainApps(new LandingPage());
-        Context.mainApps(new ClickerUI());
-        Context.mainApps(new WindowMacro());
     }
 
     private static void loadMainScreen() {

@@ -68,6 +68,23 @@ public class GlobalKeyListener implements NativeKeyListener {
             executingThreads.forEach(f -> f.cancel(true));
         }
     }
+
+    public void close() {
+        try {
+            GlobalScreen.unregisterNativeHook();
+            GlobalScreen.removeNativeKeyListener(this);
+        } catch (NativeHookException e) {
+            log.error("Error registering hook: ", e);
+        }
+
+        executingThreads.forEach(t -> t.cancel(true));
+        keyPressedHooks.clear();
+        keyReleasedHooks.clear();
+        keyTypedHooks.clear();
+        executingThreads.clear();
+        executorService.shutdownNow();
+        heldKeys.clear();
+    }
     
     private void setKeyDown(int keyCode) {
         log.info("Key down: {}", keyCode);

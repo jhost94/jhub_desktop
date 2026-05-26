@@ -56,7 +56,7 @@ public class Context {
         }
     }
 
-    public static void closeApps(String id) {
+    public static void closeApps() {
         List<GenericScreen> l;
         while (Objects.nonNull(l = MAIN_APPS) && !l.isEmpty()) {
             l.get(0).close();
@@ -69,6 +69,66 @@ public class Context {
             l.stream().filter(s -> s.equals(screen))
                 .findFirst()
                 .ifPresent(GenericScreen::close);
+        }
+    }
+
+    public static void closeSubAppsOtherThan(String id, GenericScreen... screens) {
+        if (Objects.isNull(screens) || screens.length == 0)
+            closeSubApps(id);
+        List<GenericScreen> l;
+        int i = 0;
+        int retries = 0;
+        int maxRetries = 5;
+        while (Objects.nonNull(l = SUB_APPS.get(id)) && i < l.size()) {
+            if (Arrays.stream(screens).toList().contains(l.get(i))) {
+                i++;
+                if (i >= l.size()) {
+                    if (l.stream()
+                            .filter(s -> !Arrays.stream(screens).toList().contains(s))
+                            .toList().isEmpty()) {
+                        break;
+                    }
+                    i = 0;
+                    retries++;
+                    if (retries > maxRetries) {
+                        throw new RuntimeException("Max retries achieved(" + maxRetries +
+                                                       ") while attempting to close sub-apps for id: "
+                                                       + id + ". screens: " + Arrays.toString(screens));
+                    }
+                    continue;
+                }
+                continue;
+            }
+            l.get(i).close();
+        }
+    }
+
+    public static void closeAppsOtherThan(GenericScreen... screens) {
+        if (Objects.isNull(screens) || screens.length == 0)
+            closeApps();
+        List<GenericScreen> l;
+        int i = 0;
+        int retries = 0;
+        int maxRetries = 5;
+        while (Objects.nonNull(l = MAIN_APPS) && i < l.size()) {
+            if (Arrays.stream(screens).toList().contains(l.get(i))) {
+                i++;
+                if (i >= l.size()) {
+                    if (l.stream().filter(s -> !Arrays.stream(screens).toList().contains(s)).toList().isEmpty()) {
+                        break;
+                    }
+                    i = 0;
+                    retries++;
+                    if (retries > maxRetries) {
+                        throw new RuntimeException("Max retries achieved(" + maxRetries +
+                                                       ") while attempting to close apps. screens: "
+                                                       + Arrays.toString(screens));
+                    }
+                    continue;
+                }
+                continue;
+            }
+            l.get(i).close();
         }
     }
 }

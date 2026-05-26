@@ -18,7 +18,9 @@ import java.net.URISyntaxException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class LandingPage extends GenericScreen {
     
     private static final String TITLE = "Main Screen";
@@ -41,57 +43,35 @@ public class LandingPage extends GenericScreen {
     @Override
     public void load() {
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        mainPanel.setLayout(new TableLayout(
-            new double[]{
-                5,
-                250,
-                5,
-                TableLayout.FILL,
-                5
-            },
-            new double[]{
-                2,
-                15,
-                2,
-                15,
-                2,
-                15,
-                2,
-                15,
-                2,
-                15,
-                2,
-                15,
-                2
-            }
-        ));
+        mainPanel.setLayout(new TableLayout(tableLayoutHelper.getCols(), tableLayoutHelper.getRows()));
 
-        JButton button1 = addButton(getToolTipText() + "Button 1", 1, "Button 1 description.");
-        JButton button2 = addButton(getToolTipText() + "Button 2", 3, "Button 2 description.");
-        JButton button3 = addButton(getToolTipText() + "Button 3", 5, "Button 3 description.");
+        JButton button1 = addButton("Start new Clicker", 1, "Button 1 description.");
+        JButton button2 = addButton("Start new Macro", 3, "Button 2 description.");
+        JButton button3 = addButton("Close all other apps", 5, "Button 3 description.");
         JButton openBrowserButton = addButton(getToolTipText() + "Browser Start",9,"Heads default browser to the URL.");
 
         button1.addActionListener(e -> {
-            button1.setEnabled(false);
-            button2.setEnabled(true);
-            button3.setEnabled(true);
-            button1.setText("Started");
+            GenericScreen s = new ClickerUI();
+            Context.mainApps(s);
+            s.init();
+            Context.MAIN_SCREEN.addRipOffTab(s);
+            s.load();
+            log.info("Creates a new Clicker UI");
         });
 
         // PURE SYSTEM WITHOUT BLUEPRINT SOURCES ----
 
         button2.addActionListener(e -> {
-            button1.setEnabled(true);
-            button2.setEnabled(false);
-            button3.setEnabled(true);
-            button2.setText("Started");
+            GenericScreen s = new WindowMacro();
+            Context.mainApps(s);
+            s.init();
+            Context.MAIN_SCREEN.addRipOffTab(s);
+            s.load();
+            log.info("Creates a new macro");
         });
 
         button3.addActionListener(e -> {
-            button1.setEnabled(true);
-            button2.setEnabled(true);
-            button3.setEnabled(false);
-            button3.setText("Started");
+            Context.closeAppsOtherThan(this);
         });
 
         openBrowserButton.addActionListener(e ->
